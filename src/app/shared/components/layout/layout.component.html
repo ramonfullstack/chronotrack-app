@@ -1,0 +1,29 @@
+<mat-drawer-container>
+  <mat-drawer
+    fixedInViewport
+    #sidebar
+    [mode]="(dispositivoMovel | async) ? 'over' : 'side'"
+    [opened]="!(dispositivoMovel | async)"
+  >
+    <app-sidebar
+      [rotas]="rotas"
+      (alternarSidebar)="sidebar.toggle()"
+    ></app-sidebar>
+  </mat-drawer>
+  <mat-drawer-content>
+    <div *ngIf="tituloTipo === 'rota'" class="header">
+      <a class="btnSidebar" (click)="sidebar.toggle()">
+        <mat-icon>menu</mat-icon></a
+      >
+      <button mat-icon-button *ngIf="backButton" (click)="backPath()">
+        <mat-icon>west</mat-icon>
+      </button>
+      <h1 [innerHtml]="title"></h1>
+      <h2 *ngIf="descricao">|</h2>
+      <span>{{ descricao }}</span>
+    </div>
+    <div class="router-style">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-drawer-content>
+</mat-drawer-container>

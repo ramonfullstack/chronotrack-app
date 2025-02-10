@@ -1,0 +1,13 @@
+:host {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1em;
+  .title {
+    font-size: 200px;
+    height: 120px;
+  }
+}

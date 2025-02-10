@@ -1,0 +1,41 @@
+.dialog-operation-details {
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+      overflow: hidden;
+      padding: 8px 12px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  .table-responsive {
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+
+  &__cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    &__item {
+      gap: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #f1f1f1;
+      border-radius: 4px;
+      padding: 8px;
+    }
+    &--title,
+    &--value {
+      margin: 0;
+    }
+    &--value {
+      color: #717172;
+    }
+  }
+}

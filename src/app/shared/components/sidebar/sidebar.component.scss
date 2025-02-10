@@ -1,0 +1,47 @@
+:host {
+  --background-active: #343534;
+  margin: auto;
+  display: block;
+  max-width: 270px;
+  .logo {
+    margin: 48px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: 0;
+    img {
+      max-width: 247px;
+    }
+  }
+  .mat-nested-tree-node {
+    & > .mat-list-item.active {
+      border-radius: 12px;
+      background-color: #006dc9 !important;
+    }
+    ul .mat-list-item {
+      background-color: transparent;
+    }
+  }
+  .mat-line {
+    font-size: 14px !important;
+  }
+  .mat-list-item.active {
+    background: var(--background-active) !important;
+    border-radius: 12px;
+    color: #fff;
+  }
+  .tree-invisible {
+    display: none;
+  }
+
+  .tree ul,
+  .tree li {
+    margin-top: 0;
+    margin-bottom: 0;
+    list-style-type: none;
+  }
+
+  .mat-tree-node {
+    margin-top: 2px;
+  }
+}

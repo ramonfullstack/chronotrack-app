@@ -1,0 +1,44 @@
+<a routerLink="/admin/simulator" class="logo" title="Home"
+  ><img
+    src="./../../../../assets/logos/chronotrack_icone_principal.webp"
+    alt="EntrePay - WMoney Logo"
+/></a>
+<mat-divider></mat-divider>
+<mat-nav-list>
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="tree">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+      <mat-list-item
+        class="mat-tree-node"
+        [routerLink]="[node.routerLink]"
+        [routerLinkActive]="['active']"
+        (click)="realizarLogoff(node.name)"
+      >
+        <mat-icon
+          matListIcon
+          class="material-icons-outlined"
+          *ngIf="node.icon"
+          >{{ node.icon }}</mat-icon
+        >
+        <h4 matLine>{{ node.name }}</h4>
+      </mat-list-item>
+    </mat-tree-node>
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <mat-list-item
+        matTreeNodeToggle
+        class="mat-tree-node"
+        [ngClass]="checkIsActive(node)"
+      >
+        <mat-icon matListIcon class="material-icons-outlined" *ngIf="node.icon">
+          {{ node.icon }}
+        </mat-icon>
+        <h4 matLine>{{ node.name }}</h4>
+        <mat-icon class="mat-icon-rtl-mirror">
+          {{ treeControl.isExpanded(node) ? "arrow_drop_down" : "arrow_right" }}
+        </mat-icon>
+      </mat-list-item>
+      <ul [class.tree-invisible]="treeControl.isExpanded(node)">
+        <ng-container matTreeNodeOutlet></ng-container>
+      </ul>
+    </mat-nested-tree-node>
+  </mat-tree>
+</mat-nav-list>

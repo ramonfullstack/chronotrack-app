@@ -1,0 +1,55 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
+html,
+body {
+  height: 100%;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  margin: 0;
+  font-family: "Nunito Sans", sans-serif;
+}
+
+@keyframes fade {
+  0% {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
+
+.error {
+  background-color: #f44336;
+  color: #d2d2d2; /* Cor do texto, ajuste conforme necessário */
+}
+
+.sucesso {
+  background-color: rgba(0, 126, 215, 0.753);
+  color: #d2d2d2; /* Cor do texto, ajuste conforme necessário */
+}
+
+router-outlet + * {
+  display: block;
+  animation: fade 0.3s;
+}
+
+mat-card-header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Nunito Sans", sans-serif !important;
+}

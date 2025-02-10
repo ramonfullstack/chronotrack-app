@@ -1,0 +1,181 @@
+// ||=======================================================================||
+// || Tema gerado em https://www.nikhilwalvekar.com/ng-mat-theme-generator/ ||
+// ||=======================================================================||
+@import "~@angular/material/theming";
+@include mat-core();
+
+$mat-primary-scheme: (
+  100: #c5cae9,
+  500: #0352a8,
+  700: #007aff,
+  contrast: (
+    100: rgba(0, 0, 0, 0.87),
+    500: #ffffff,
+    700: #ffffff,
+  ),
+);
+$mat-accent-scheme: (
+  100: #ff80ab,
+  500: #ff4081,
+  700: #f50057,
+  contrast: (
+    100: rgba(0, 0, 0, 0.87),
+    500: rgba(0, 0, 0, 0.87),
+    700: #ffffff,
+  ),
+);
+$mat-primary-palette: mat-palette($mat-primary-scheme);
+$mat-accent-palette: mat-palette($mat-accent-scheme);
+$app-light-theme: mat-light-theme($mat-primary-palette, $mat-accent-palette);
+
+$candy-app-primary: mat-palette($mat-primary-scheme, 700);
+$candy-app-accent: mat-palette($mat-grey, 600, 500, 900);
+$candy-app-warn: mat-palette($mat-red);
+$candy-app-theme: mat-light-theme(
+  $candy-app-primary,
+  $candy-app-accent,
+  $candy-app-warn
+);
+
+@include mat-checkbox-theme($candy-app-theme);
+@include mat-button-theme($candy-app-theme);
+@include mat-menu-theme($candy-app-theme);
+
+@mixin mix-app-theme($app-theme) {
+  $primary: map-get($app-theme, primary);
+
+  .mat-button-toggle {
+    background-color: mat-color($primary, 700);
+    color: mat-color($primary, default-contrast);
+  }
+
+  .mat-button-toggle-checked {
+    background-color: mat-color($primary);
+  }
+}
+@include mix-app-theme($app-light-theme);
+
+.light-mode {
+  @include angular-material-theme($app-light-theme);
+}
+
+$app-dark-theme: mat-dark-theme($mat-primary-palette, $mat-accent-palette);
+
+.dark-mode {
+  @include angular-material-theme($app-dark-theme);
+  color: whitesmoke;
+}
+
+.mat-card {
+  font-family: "Nunito Sans", sans-serif;
+}
+.mat-card,
+.mat-table,
+.mat-paginator {
+  background-color: #fff;
+}
+.mat-drawer-container {
+  background-color: #d9d9d9;
+  color: hsl(0, 0%, 12%);
+}
+.mat-flat-button {
+  height: 50px;
+  .mat-button-wrapper {
+    height: 100%;
+    gap: 3px;
+  }
+  &.mat-primary {
+    background-color: #007aff;
+    * {
+      color: #fff;
+    }
+    // &.mat-button-disabled {
+    //   background-color: rgba(26, 27, 31, 0.12);
+    //   * {
+    //     color: rgba(26, 27, 31, 0.38) !important;
+    //   }
+    // }
+  }
+}
+.mat-form-field-appearance-fill {
+  &.mat-form-field-invalid {
+    .mat-form-field-flex {
+      border: 1px solid #f44336 !important;
+    }
+  }
+  .mat-error,
+  .mat-error * {
+    color: #f44336;
+  }
+  .mat-form-field-underline::before {
+    display: none;
+  }
+  .mat-input-element {
+    color: #252525;
+  }
+  .mat-form-field-flex {
+    background-color: #fff;
+    border-radius: 6px !important;
+  }
+  .mat-form-field-label {
+    color: #252525;
+  }
+  .mat-form-field-ripple {
+    background-color: transparent !important;
+  }
+}
+.mat-divider {
+  border: 0.5px solid rgba(#fff, 0.3);
+}
+
+//datepicker
+
+.mat-datepicker-content {
+  box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+  background-color: #d9d9d9;
+  .mat-calendar-body-cell-content {
+    border-color: transparent;
+  }
+}
+@media (hover: hover) {
+  .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover
+    > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(
+      .mat-calendar-body-comparison-identical
+    ) {
+    background-color: rgba(26, 27, 31, 0.08);
+  }
+}
+.mat-calendar-body-today:not(.mat-calendar-body-selected):not(
+    .mat-calendar-body-comparison-identical
+  ) {
+  border-color: #242424;
+}
+.mat-calendar-body-selected {
+  background-color: #242424;
+  color: #fff;
+}
+.mat-select-panel {
+  background: white;
+  box-shadow: 0 2px 4px -1px #0003, 0 4px 5px #00000024, 0 1px 10px #0000001f;
+}
+.mat-option:hover:not(.mat-option-disabled),
+.mat-option:focus:not(.mat-option-disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+.mat-select-panel .mat-option.mat-selected:not(.mat-option-multiple) {
+  background: rgba(0, 0, 0, 0.12);
+}
+.mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: #007aff;
+}
+.mat-menu-panel {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+}
+
+.mat-dialog-container {
+  box-shadow: 0 11px 15px -7px #0003, 0 24px 38px 3px #00000024,
+    0 9px 46px 8px #0000001f;
+  background: white;
+  color: #000000de;
+}

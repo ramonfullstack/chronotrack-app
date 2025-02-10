@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-chronotrack-deploy
+spec:
+  selector:
+    matchLabels:
+      app: app-chronotrack
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app-chronotrack
+    spec:
+      containers:
+      - name: app-wise
+        image: us.gcr.io/ramon-prd/app-chronotrack:latest
+        ports:
+        - containerPort: 80
+          protocol: TCP

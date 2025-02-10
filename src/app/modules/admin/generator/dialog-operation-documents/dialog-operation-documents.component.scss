@@ -1,0 +1,24 @@
+
+.select {
+  width: 10vw;
+}
+.dialog-operation-documents {
+  width: 80vw;
+  height: 90vh; 
+  max-width: none; // Remover a limitação padrão do Angular Material
+  max-height: none;
+  
+  display: flex;
+  flex-direction: column;
+
+  mat-dialog-content {
+    flex: 1; // O conteúdo ocupará todo o espaço disponível
+    display: flex;
+    flex-direction: column;
+  }
+
+  iframe {
+    flex: 1; // O iframe ocupará todo o espaço disponível
+    border: none;
+  }
+}

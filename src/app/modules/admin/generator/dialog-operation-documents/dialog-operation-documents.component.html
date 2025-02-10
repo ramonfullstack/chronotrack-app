@@ -1,0 +1,10 @@
+<mat-dialog-content class="dialog-operation-documents">
+  <h2 mat-dialog-title>Documentos da Antecipação</h2>
+  <!-- <mat-form-field appearance="outline" style="max-width: 15%;">
+    <mat-label >Selecione o Documento</mat-label>
+    <mat-select (selectionChange)="onDocumentSelect($event)" class="select" value="cessao">
+      <mat-option value="cessao" *ngIf="hasCessaoUr">Cessão</mat-option>
+    </mat-select>
+  </mat-form-field> -->
+  <iframe *ngIf="documentUrl" [src]="documentUrl"></iframe>
+</mat-dialog-content>

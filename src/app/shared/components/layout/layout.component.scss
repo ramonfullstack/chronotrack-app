@@ -1,0 +1,86 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  mat-drawer-container {
+    height: 100%;
+    mat-drawer {
+      width: 330px;
+      background-color: #252525;
+      color: #fff;
+    }
+    mat-drawer-content {
+      display: flex;
+      flex-direction: column;
+      .header {
+        display: flex;
+        align-items: center;
+        padding: 1em;
+        color: #252525;
+        h1 {
+          margin: 0;
+          font-size: 18px;
+          @media (min-width: 960px) {
+            font-size: 24px;
+          }
+        }
+        span {
+          font-weight: 300;
+        }
+      }
+      .welcome {
+        height: 175px;
+        padding: 1em;
+        background: url("/assets/logos/uranus_branco.svg") no-repeat 0 0 scroll;
+        background-size: 50%;
+        background-position: center top;
+        text-align: end;
+        color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        h1 {
+          font-size: 75px;
+        }
+        h2 {
+          font-weight: normal;
+        }
+      }
+      .router-style {
+        margin: 0 1em 1em;
+      }
+    }
+  }
+}
+
+.btnSidebar {
+  height: 30px;
+  min-width: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  @media (min-width: 960px) {
+    display: none;
+  }
+}
+
+// ESTILO SCROLLBAR
+::ng-deep::-webkit-scrollbar {
+  width: 10px !important;
+  border-radius: 5px !important;
+}
+::ng-deep::-webkit-scrollbar-track {
+  background: #88888817 !important;
+  border-radius: 10px !important;
+}
+::ng-deep::-webkit-scrollbar-thumb {
+  background: #88888823 !important;
+  border-radius: 10px !important;
+}
+::ng-deep::-webkit-scrollbar-thumb:hover {
+  background: #88888840 !important;
+}

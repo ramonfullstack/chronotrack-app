@@ -1,0 +1,71 @@
+.statement {
+  &--card {
+    margin-bottom: 16px;
+  }
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    &--search {
+      gap: 16px;
+      ::ng-deep .mat-form-field-wrapper {
+        margin: 0;
+        padding-bottom: 0;
+      }
+    }
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    th,
+    td {
+      overflow: hidden;
+      padding: 8px 12px;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      border-bottom: 1px solid #ddd;
+    }
+  }
+
+  .status-column {
+    background: white;
+  }
+  
+  .mat-header-cell.stickyEnd, .mat-cell.stickyEnd {
+    background: white; 
+    z-index: 2;
+  }
+  
+
+  .table-responsive {
+    overflow-x: auto;
+  }
+
+  @media (max-width: 600px) {
+    .content-header {
+      flex-direction: column;
+    }
+
+    mat-form-field,
+    button {
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+  }
+}
+
+.table-container {
+  height: auto;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.mat-column-action {
+  position: sticky;
+  right: 0;
+  background: white;
+  z-index: 2;
+}
