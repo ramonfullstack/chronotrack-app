@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AdminComponent } from './admin.component';
+import { GeneratorModule } from './generator/generator.module';
+import { GeneratorComponent } from './generator/generator/generator.component';
 
 const routes: Routes = [
   {
@@ -8,7 +10,7 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
-        path: 'generator',
+        path: 'admin/generator',
         loadChildren: () =>
           import('./generator/generator.module').then((m) => m.GeneratorModule),
       }
@@ -21,3 +23,4 @@ const routes: Routes = [
   exports: [RouterModule],
 })
 export class AdminRoutingModule {}
+

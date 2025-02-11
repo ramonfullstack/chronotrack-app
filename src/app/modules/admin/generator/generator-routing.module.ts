@@ -7,17 +7,8 @@ const routes: Routes = [
     path: '',
     component: GeneratorComponent,
     data: {
-      title: 'Extrato de <b>Operações</b>',
-      descricao: '',
-      tituloTipo: 'rota',
-    },
-  },
-  {
-    path: ':cnpj',
-    component: GeneratorComponent,
-    data: {
-      title: 'Extrato de <b>Operações</b>',
-      descricao: '',
+      title: 'Gerador de horas',
+      descricao: 'Descrição do Gerador de Horas', // Aqui você pode adicionar a descrição ou deixá-la em branco
       tituloTipo: 'rota',
     },
   },

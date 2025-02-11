@@ -23,8 +23,8 @@ export class AdminComponent implements OnInit {
       children: [
         {
           name: 'Gerar horas em planilha',
-          roles: [''],
-          routerLink: '/admin/generator',
+          roles: [''],  // Você pode definir permissões específicas se necessário
+          routerLink: '/admin/generator',  // Caminho correto para o componente
         },
       ],
     },
@@ -32,7 +32,7 @@ export class AdminComponent implements OnInit {
       name: 'Sair',
       icon: 'exit_to_app',
       roles: [''],
-      routerLink: '/admin/logout',
+      routerLink: '/admin/logout',  // Definindo a rota de logout
     },
   ];
 }

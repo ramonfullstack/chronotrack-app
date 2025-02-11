@@ -37,9 +37,6 @@ export class DialogOperationDocumentsComponent implements OnInit {
    this.hasCessaoUr = this.data.hasCessaoUr == 1
    this.idAnticipation = this.data.idAnticipation
 
-   this.service.getAnticipationDocuments(this.idAnticipation, "cessao_ur").subscribe((resp: any) => {
-    this.documentUrl = this.sanitizer.bypassSecurityTrustResourceUrl(resp.signedFileUrl);
-  });
   }
 
 }

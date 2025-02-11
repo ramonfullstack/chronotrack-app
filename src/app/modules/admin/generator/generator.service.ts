@@ -1,43 +1,42 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import GetStatementRequest from './model/GetStatementRequest';
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
+import { ExtraHours } from './model/ExtrahoursModel';
+
+
 
 @Injectable({
   providedIn: 'root',
 })
 export class GeneratorService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    console.log('iniciado generator.');
+  }
 
-  getStatement(request: GetStatementRequest) {
-    return this.http.get(
-      `${
-        environment.apiUrl
-      }/receivable/user/transaction/anticipation/company/${this.buildQueryString(
-        request
-      )}`
+  getHoursByUser(idUser: number): Observable<ExtraHours[]> {
+    return this.http.get<ExtraHours[]>(
+      `${environment.apiUrl}/extrahours/getHoursWorkedByUser/${idUser}`
     );
   }
 
-  ExportScheduleToExcel(request: GetStatementRequest): Observable<Blob> {
-    return this.http.get(
-      `${environment.apiUrl}/receivable/excel/statements/exportexcel${this.buildQueryString(request)}`,
-      { responseType: 'blob' } // Importante para arquivos
+  downloadSalesReport(idUser: number): Observable<Blob> {
+    return this.http.get(`${environment.apiUrl}/extrahours/exportexcel/${idUser}`, {
+      responseType: 'blob',
+    }).pipe(
+      tap((blob: Blob) => {
+        const a = document.createElement('a');
+        const url = window.URL.createObjectURL(blob);
+        a.href = url;
+        a.download = 'sales_report.xlsx';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      })
     );
   }
-
-  getAnticipationDetail(idAnticipation:number) {
-    return this.http.get(`${environment.apiUrl}/receivable/anticipation/detail/${idAnticipation}`) 
-  }
-
-  getSignature(idOperacao: string | null) {
-    return this.http.get(`${environment.apiUrl}/receivable/anticipation/status/document/${idOperacao}`) 
-  }
-
-  getAnticipationDocuments(idAnticipation:number, type: string) {
-    return this.http.get(`${environment.apiUrl}/receivable/user/download/document/anticipation/${type}/${idAnticipation}`) 
-  }
+  
 
   buildQueryString(params: any): string {
     if (!params) return '';
@@ -49,10 +48,6 @@ export class GeneratorService {
         .join('&');
 
     return qs;
-  }
-
-  postConfirmCreate(idAnticipation:number) {
-    return this.http.post(`${environment.apiUrl}/receivable/anticipation/confirm/create/${idAnticipation}`, null) 
   }
 
 }

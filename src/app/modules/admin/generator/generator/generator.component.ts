@@ -1,9 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import GetStatementRequest from '../model/GetStatementRequest';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { DialogOperationDetailsService } from '../dialog-operation-details/dialog-operation-details.service';
 import { ActivatedRoute } from '@angular/router';
 import { UtilsService } from '@shared/services/utils.service';
 import { LoginService } from 'src/app/modules/login/login.service';
@@ -18,7 +16,6 @@ import { GeneratorService } from '../generator.service';
   styleUrls: ['./generator.component.scss'],
 })
 export class GeneratorComponent implements AfterViewInit {
-
   displayedColumns: string[] = [
     'idAnticipation',
     'cnpj',
@@ -30,7 +27,7 @@ export class GeneratorComponent implements AfterViewInit {
   ];
   dataSource!: MatTableDataSource<any>;
 
-  filters = new GetStatementRequest();
+  //filters = new GetStatementRequest();
   count: number = 0;
   inputStartDate: Date;
   inputEndDate: Date;
@@ -38,37 +35,30 @@ export class GeneratorComponent implements AfterViewInit {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-diaSemana: any;
-horasTrabalhadas: any;
-percentualDia: any;
-valorHora: any;
-total: any;
+  diaSemana: any;
+  horasTrabalhadas: any;
+  percentualDia: any;
+  valorHora: any;
+  total: any;
 
   constructor(
     private service: GeneratorService,
-    private _dialogService: DialogOperationDetailsService,
     private _dialogDocumentsService: DialogOperationDocumentsService,
     private route: ActivatedRoute,
     private utilsService: UtilsService,
     private _loginService: LoginService,
     private _cookieService: CookieStorage
   ) {
-    this.startMinDateValue();
-  }
-
-  private startMinDateValue() {
-    const today = new Date();
-    const nextThreeDays = new Date(today.setDate(today.getDate() + 3));
-    this.minStartDate = nextThreeDays;
+    console.log('Iniciado gerador de horas componente');
   }
 
   ngAfterViewInit(): void {
-    this.route.params.subscribe((params) => {
-      this.filters.Cnpj = params['cnpj'] || '';
-    });
+    // this.route.params.subscribe((params) => {
+    //   this.filters.Cnpj = params['cnpj'] || '';
+    // });
 
-    //this.updateUserList();
     this.handleRefreshToken();
+    this.updateFilters();
   }
 
   openDialogOperationDocuments(
@@ -77,8 +67,6 @@ total: any;
     hasAnexo: number,
     hasCessaoUr: number
   ) {
-
-
     this._dialogDocumentsService
       .openDocumentsDialog({
         idAnticipation,
@@ -88,35 +76,32 @@ total: any;
       .subscribe();
   }
 
-  validateFilters(): GetStatementRequest {
-    let request = new GetStatementRequest();
-    if (this.filters.Cnpj) request.Cnpj = this.filters.Cnpj;
-    if (this.filters.companyName)
-      request.companyName = this.filters.companyName;
+  // validateFilters(): GetStatementRequest {
+  //   let request = new GetStatementRequest();
+  //   if (this.filters.Cnpj) request.Cnpj = this.filters.Cnpj;
+  //   if (this.filters.companyName)
+  //     request.companyName = this.filters.companyName;
 
-    if(this.inputStartDate)
-      request.startDate = this.inputStartDate.toISOString().slice(0, 10);
-    if(this.inputEndDate)
-      request.endDate = this.inputEndDate.toISOString().slice(0, 10);
-    if(this.filters.status)
-      request.status = this.filters.status;
-    
-    
-    request.pgNumber = this.paginator.pageIndex + 1;
-    request.pgSize = this.paginator.pageSize;
+  //   if (this.inputStartDate)
+  //     request.startDate = this.inputStartDate.toISOString().slice(0, 10);
+  //   if (this.inputEndDate)
+  //     request.endDate = this.inputEndDate.toISOString().slice(0, 10);
+  //   if (this.filters.status) request.status = this.filters.status;
 
-    return request;
-  }
+  //   request.pgNumber = this.paginator.pageIndex + 1;
+  //   request.pgSize = this.paginator.pageSize;
 
-   inputPeriodPreset(mes: number) {
+  //   return request;
+  // }
+
+  inputPeriodPreset(mes: number) {
     this.inputStartDate = moment().add(3, 'days').toDate();
     this.inputEndDate = moment().add(mes, 'months').toDate();
   }
 
-  // updateFilters() {
-  //   this.paginator.firstPage();
-  //   this.updateUserList();
-  // }
+  updateFilters() {
+    this.paginator.firstPage();
+  }
 
   handleRefreshToken(): void {
     this._loginService.refreshToken().subscribe({
@@ -153,5 +138,4 @@ total: any;
   //     }
   //   });
   // }
-  
 }

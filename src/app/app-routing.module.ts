@@ -14,14 +14,15 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
   },
+  // {
+  //   path: 'admin/generator',
+  //   canActivate: [AuthGuard],
+  //   loadChildren: () => import('./modules/admin/generator/generator.module').then(m => m.GeneratorModule)
+  // },
   {
     path: 'login',
     canActivate: [LoginGuard],
     loadChildren: () => import('./modules/login/login.module').then(m => m.LoginModule)
-  },
-  {
-    path: 'confirm/anticipation/12gf9i12kasgoao1293415',
-    loadChildren: () => import('./modules/confirm-anticipation/confirm-anticipation.module').then(m => m.ConfirmAnticipationModule)
   },
   {
     path: '404',
