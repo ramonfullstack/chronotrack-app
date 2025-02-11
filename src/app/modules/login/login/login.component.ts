@@ -63,7 +63,7 @@ export class LoginComponent {
           console.log("Salvo o idUser como no localStorage: " + localStorage.getItem("idUser"));
   
           // Salvar o refreshToken no cookie
-          //this.cookieService.SetTokenOnCookies(refreshToken);
+          this.cookieService.SetTokenOnCookies(refreshToken);
   
           this.router.navigateByUrl('/admin');
         }, (error) => {

@@ -139,26 +139,39 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
       console.error('ID do usuário não encontrado');
     }
   }
+
   exportarPraCsv() {
-    // Lógica para exportação para CSV
     const csvData = this.dataSource.data.map((row) => ({
       id: row.id,
       idUser: row.idUser,
       dayOfWeek: row.dayOfWeek,
       hoursWorked: row.hoursWorked,
       totalValueEarnedDay: row.totalValueEarnedDay,
-      created: row.created.toISOString(),
+      created: this.formatDate(row.created),  // Convertendo a data para um formato legível
     }));
+  
     const csvString = this.convertToCSV(csvData);
     this.downloadCSV(csvString);
   }
-
+  
   convertToCSV(data: any[]): string {
-    const header = Object.keys(data[0]).join(',') + '\n';
-    const rows = data.map((row) => Object.values(row).join(',')).join('\n');
+    const header = Object.keys(data[0]).join(',') + '\n'; // Cabeçalho
+    const rows = data.map((row) => Object.values(row).join(',')).join('\n'); // Dados
     return header + rows;
   }
-
+  
+  formatDate(date: any): string {
+    // Formata a data para um formato legível (exemplo: dd/MM/yyyy HH:mm)
+    const formattedDate = new Date(date);
+    const day = String(formattedDate.getDate()).padStart(2, '0');
+    const month = String(formattedDate.getMonth() + 1).padStart(2, '0'); // Meses começam de 0
+    const year = formattedDate.getFullYear();
+    const hours = String(formattedDate.getHours()).padStart(2, '0');
+    const minutes = String(formattedDate.getMinutes()).padStart(2, '0');
+  
+    return `${day}/${month}/${year} ${hours}:${minutes}`;
+  }
+  
   downloadCSV(csvString: string) {
     const blob = new Blob([csvString], { type: 'text/csv' });
     const url = window.URL.createObjectURL(blob);
