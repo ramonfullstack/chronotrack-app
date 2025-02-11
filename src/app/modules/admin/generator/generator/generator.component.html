@@ -4,7 +4,11 @@
       <div class="statement__header--search d-flex flex-wrap align-items-center">
         <mat-form-field appearance="outline">
           <mat-label>Dia da semana</mat-label>
-          <input matInput [(ngModel)]="extraHours.dayOfWeek" />
+          <mat-select [(ngModel)]="extraHours.dayOfWeek">
+            <mat-option *ngFor="let day of daysOfWeek" [value]="day">
+              {{ day }}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
@@ -19,7 +23,7 @@
 
         <mat-form-field appearance="outline">
           <mat-label>Valor por hora</mat-label>
-          <input matInput type="number" [(ngModel)]="extraHours.valueHourBase" />
+          <input matInput type="number" [(ngModel)]="extraHours.valueHourBase" (blur)="calcularHoraTotal()"/>
         </mat-form-field>
 
         <mat-form-field appearance="outline">

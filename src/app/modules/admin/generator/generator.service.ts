@@ -20,6 +20,13 @@ export class GeneratorService {
     );
   }
 
+  saveHourInDatabase(extraHours: ExtraHours): Observable<ExtraHours> {
+    return this.http.post<ExtraHours>(
+      `${environment.apiUrl}/extrahours/saveHour`, 
+      extraHours
+    );
+  }
+
   downloadSalesReport(idUser: number): Observable<Blob> {
     return this.http.get(`${environment.apiUrl}/extrahours/exportexcel/${idUser}`, {
       responseType: 'blob',

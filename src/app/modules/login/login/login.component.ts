@@ -46,11 +46,30 @@ export class LoginComponent {
           this.loginForm.get('password')?.value
         )
         .subscribe((res) => {
-          console.log('Logado: ' + res);
-          let refreshToken = res.token;
-          this.cookieService.SetTokenOnCookies(refreshToken);
+          console.log('Logado: ', res);
+          
+          let refreshToken = res.token.token;
+          
+          const userId = res.user.id;
+          if (userId) {
+            localStorage.setItem('userId', userId.toString());
+          } else {
+            console.error('userId não encontrado na resposta');
+          }
+          
+          localStorage.setItem('userName', res.user.name);
+          localStorage.setItem('userEmail', res.user.email);
+
+          console.log("Salvo o idUser como no localStorage: " + localStorage.getItem("idUser"));
+  
+          // Salvar o refreshToken no cookie
+          //this.cookieService.SetTokenOnCookies(refreshToken);
+  
           this.router.navigateByUrl('/admin');
+        }, (error) => {
+          console.error('Erro ao fazer login:', error);
         });
     }
   }
+  
 }

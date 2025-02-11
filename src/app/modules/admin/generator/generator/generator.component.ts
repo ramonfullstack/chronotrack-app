@@ -10,7 +10,7 @@ import { ExtraHours } from '../model/ExtrahoursModel';
   templateUrl: './generator.component.html',
   styleUrls: ['./generator.component.scss'],
 })
-export class GeneratorComponent implements AfterViewInit {
+export class GeneratorComponent implements AfterViewInit, OnInit {
   displayedColumns: string[] = [
     'id',
     'idUser',
@@ -19,7 +19,7 @@ export class GeneratorComponent implements AfterViewInit {
     'totalValueEarnedDay',
     'created',
   ];
-  dataSource!: MatTableDataSource<ExtraHours>;
+  dataSource = new MatTableDataSource<ExtraHours>();
   extraHours: ExtraHours = {
     id: 0,
     idUser: 0,
@@ -32,28 +32,51 @@ export class GeneratorComponent implements AfterViewInit {
     updated: new Date(),
   };
 
+  daysOfWeek: string[] = [
+    'Domingo',
+    'Segunda-feira',
+    'Terça-feira',
+    'Quarta-feira',
+    'Quinta-feira',
+    'Sexta-feira',
+    'Sábado',
+  ];
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
+  userId: number;
 
   constructor(private service: GeneratorService) {}
+
+  ngOnInit() {
+    this.getUserIdFromLocalStorage();
+    this.setDefaultDayOfWeek();
+    this.getListExtraHours();
+  }
 
   ngAfterViewInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
 
-  ngOnInit() {
-    this.loadFictitiousData();
+  setDefaultDayOfWeek() {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0 (Domingo) até 6 (Sábado)
+    this.extraHours.dayOfWeek = this.daysOfWeek[dayOfWeek]; // Define o dia atual
   }
 
   addCalculo() {
-    this.extraHours.totalValueEarnedDay =
-      (this.extraHours.hoursWorked || 0) *
-      (this.extraHours.valueHourBase || 0) *
-      (this.extraHours.baseRateDay || 100) / 100;
+    this.extraHours.idUser = this.userId;
+    console.log('extra hours: ' + this.extraHours);
+    this.service.saveHourInDatabase(this.extraHours).subscribe(
+      (res) => {
+        console.log('Hora extra salva com sucesso:', res);
+      },
+      (error) => {
+        console.error('Erro ao salvar hora extra:', error);
+      }
+    );
 
-    // Aqui você pode adicionar o cálculo à lista de registros
-    this.dataSource.data = [...this.dataSource.data, this.extraHours];
     this.extraHours = {
       id: 0,
       idUser: 0,
@@ -65,15 +88,57 @@ export class GeneratorComponent implements AfterViewInit {
       created: new Date(),
       updated: new Date(),
     };
+
+    this.getListExtraHours();
   }
 
- 
+  getUserIdFromLocalStorage(): void {
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      this.userId = parseInt(storedUserId, 10);
+    } else {
+      console.error('userId não encontrado no localStorage');
+    }
+  }
+
+  calcularHoraTotal() {
+    if (
+      this.extraHours.hoursWorked &&
+      this.extraHours.valueHourBase &&
+      this.extraHours.baseRateDay
+    ) {
+      const totalValor =
+        this.extraHours.hoursWorked *
+        this.extraHours.baseRateDay *
+        this.extraHours.valueHourBase;
+      this.extraHours.totalValueEarnedDay = totalValor;
+    }
+  }
 
   loadFictitiousData() {
     const fictitiousData = this.service.getFictitiousData();
     this.dataSource.data = fictitiousData;
   }
 
+  getListExtraHours(): void {
+    if (this.userId) {
+      this.service.getHoursByUser(this.userId).subscribe(
+        (data) => {
+          if (data && Array.isArray(data)) {
+            this.dataSource.data = data;
+            console.log('Horas extras carregadas:', data);
+          } else {
+            console.error('Dados de horas extras inválidos', data);
+          }
+        },
+        (error) => {
+          console.error('Erro ao carregar as horas extras', error);
+        }
+      );
+    } else {
+      console.error('ID do usuário não encontrado');
+    }
+  }
   exportarPraCsv() {
     // Lógica para exportação para CSV
     const csvData = this.dataSource.data.map((row) => ({
@@ -90,9 +155,7 @@ export class GeneratorComponent implements AfterViewInit {
 
   convertToCSV(data: any[]): string {
     const header = Object.keys(data[0]).join(',') + '\n';
-    const rows = data
-      .map((row) => Object.values(row).join(','))
-      .join('\n');
+    const rows = data.map((row) => Object.values(row).join(',')).join('\n');
     return header + rows;
   }
 

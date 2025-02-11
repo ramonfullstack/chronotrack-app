@@ -28,7 +28,7 @@ export class SidebarComponent implements OnInit {
   treeControl = new NestedTreeControl<AsideMenuNode>((node) => node.children);
 
   ngOnInit() {
-    this.userRoles = this.cookieService.GetRoles();
+    //this.userRoles = this.cookieService.GetRoles();
     this.createListDataSource();
     this.updateCorBackgroundLinkActive();
   }

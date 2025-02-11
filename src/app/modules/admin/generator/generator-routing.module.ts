@@ -8,7 +8,7 @@ const routes: Routes = [
     component: GeneratorComponent, 
     data: {
       title: 'Gerador de horas',
-      descricao: '', // Aqui você pode adicionar a descrição ou deixá-la em branco
+      descricao: '',
       tituloTipo: 'rota',
     },
   },

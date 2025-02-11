@@ -1,5 +1,4 @@
 import { HttpClient } from '@angular/common/http';
-import { StringMap } from '@angular/compiler/src/compiler_facade_interface';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,7 +10,8 @@ export interface token {
 export interface user {
   id: number,
   name: string,
-  email: string
+  email: string,
+  password?: string;
 }
 
 @Injectable({
