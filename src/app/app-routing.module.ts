@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from '@core/guards/auth.guard';
 import { LoginGuard } from '@core/guards/login.guard';
+import { GeneratorComponent } from './modules/admin/generator/generator/generator.component';
 
 const routes: Routes = [
   {
@@ -14,11 +15,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./modules/admin/admin.module').then(m => m.AdminModule)
   },
-  // {
-  //   path: 'admin/generator',
-  //   canActivate: [AuthGuard],
-  //   loadChildren: () => import('./modules/admin/generator/generator.module').then(m => m.GeneratorModule)
-  // },
   {
     path: 'login',
     canActivate: [LoginGuard],
@@ -27,6 +23,10 @@ const routes: Routes = [
   {
     path: '404',
     loadChildren: () => import('./modules/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule)
+  },
+  {
+    path: 'admin/generator', // A rota especificada
+    component: GeneratorComponent
   },
   {
     path: '**',

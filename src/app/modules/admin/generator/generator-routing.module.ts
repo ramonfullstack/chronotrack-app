@@ -5,14 +5,15 @@ import { GeneratorComponent } from './generator/generator.component';
 const routes: Routes = [
   {
     path: '',
-    component: GeneratorComponent,
+    component: GeneratorComponent, 
     data: {
       title: 'Gerador de horas',
-      descricao: 'Descrição do Gerador de Horas', // Aqui você pode adicionar a descrição ou deixá-la em branco
+      descricao: '', // Aqui você pode adicionar a descrição ou deixá-la em branco
       tituloTipo: 'rota',
     },
   },
 ];
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

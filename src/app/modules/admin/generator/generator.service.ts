@@ -36,6 +36,41 @@ export class GeneratorService {
       })
     );
   }
+
+  getFictitiousData(): ExtraHours[] {
+    const data: ExtraHours[] = [];
+    
+    // Gerando 10 dados fictícios
+    for (let i = 0; i < 10; i++) {
+      const fictitiousData: ExtraHours = {
+        id: i + 1,
+        idUser: Math.floor(Math.random() * 10) + 1,
+        hoursWorked: Math.floor(Math.random() * 10) + 1,
+        baseRateDay: Math.floor(Math.random() * 100) + 1,
+        valueHourBase: Math.floor(Math.random() * 100) + 10,
+        totalValueEarnedDay: 0,
+        dayOfWeek: this.getRandomDayOfWeek(),
+        created: new Date(),
+        updated: new Date(),
+      };
+
+      // Calculando o valor total ganho no dia
+      fictitiousData.totalValueEarnedDay =
+        (fictitiousData.hoursWorked || 0) *
+        (fictitiousData.valueHourBase || 0) *
+        (fictitiousData.baseRateDay || 100) / 100;
+
+      data.push(fictitiousData);
+    }
+
+    return data;
+  }
+
+  private getRandomDayOfWeek(): string {
+    const days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
+    const randomIndex = Math.floor(Math.random() * days.length);
+    return days[randomIndex];
+  }
   
 
   buildQueryString(params: any): string {

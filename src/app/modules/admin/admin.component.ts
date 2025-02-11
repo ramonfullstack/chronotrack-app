@@ -9,12 +9,14 @@ import { environment } from 'src/environments/environment';
 })
 export class AdminComponent implements OnInit {
   constructor(private title: Title
-  ) {}
+  ) {
+  }
 
   logo = '';
 
   ngOnInit() {
     this.title.setTitle(environment.service_name);
+    console.log(this.rotas);
   }
 
   rotas: Array<AsideMenuNode> = [
@@ -23,16 +25,19 @@ export class AdminComponent implements OnInit {
       children: [
         {
           name: 'Gerar horas em planilha',
-          roles: [''],  // Você pode definir permissões específicas se necessário
-          routerLink: '/admin/generator',  // Caminho correto para o componente
+          routerLink: '/admin/generator',
         },
       ],
     },
     {
       name: 'Sair',
       icon: 'exit_to_app',
-      roles: [''],
       routerLink: '/admin/logout',  // Definindo a rota de logout
     },
   ];
 }
+
+  
+
+  
+

@@ -21,6 +21,7 @@ import { DialogOperationDetailsComponent } from './dialog-operation-details/dial
 import { MatDialogModule } from '@angular/material/dialog';
 import { DialogOperationDocumentsComponent } from './dialog-operation-documents/dialog-operation-documents.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GeneratorRoutingModule } from './generator-routing.module';
 
 @NgModule({
   declarations: [GeneratorComponent, DialogOperationDetailsComponent, DialogOperationDocumentsComponent],
@@ -43,7 +44,9 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     MatSelectModule,
     MatDialogModule,
     MatProgressSpinnerModule,
-    MatTooltipModule,
+    MatTooltipModule, 
+    GeneratorRoutingModule
   ],
+  exports: [GeneratorComponent],
 })
 export class GeneratorModule {}

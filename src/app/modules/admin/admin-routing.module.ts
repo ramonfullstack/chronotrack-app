@@ -10,9 +10,8 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
-        path: 'admin/generator',
-        loadChildren: () =>
-          import('./generator/generator.module').then((m) => m.GeneratorModule),
+        path: 'generator',
+        loadChildren: () => import('./generator/generator.module').then((m) => m.GeneratorModule),
       }
     ],
   },

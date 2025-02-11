@@ -1,41 +1,38 @@
 <div class="statement">
   <mat-card class="statement--card">
     <div class="statement__header">
-      <div
-        class="statement__header--search d-flex flex-wrap align-items-center"
-      >
-      <mat-form-field appearance="outline">
-        <mat-label>Dia da semana</mat-label>
-        <input matInput [(ngModel)]="diaSemana" />
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Horas trabalhadas</mat-label>
-        <input matInput type="number" [(ngModel)]="horasTrabalhadas" />
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Percentual do dia (%)</mat-label>
-        <input matInput type="number" [(ngModel)]="percentualDia" />
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Valor por hora</mat-label>
-        <input matInput type="number" [(ngModel)]="valorHora" />
-      </mat-form-field>
-      
-      <mat-form-field appearance="outline">
-        <mat-label>Total calculado</mat-label>
-        <input matInput [(ngModel)]="total" readonly />
-      </mat-form-field>
+      <div class="statement__header--search d-flex flex-wrap align-items-center">
+        <mat-form-field appearance="outline">
+          <mat-label>Dia da semana</mat-label>
+          <input matInput [(ngModel)]="extraHours.dayOfWeek" />
+        </mat-form-field>
 
+        <mat-form-field appearance="outline">
+          <mat-label>Horas trabalhadas</mat-label>
+          <input matInput type="number" [(ngModel)]="extraHours.hoursWorked" />
+        </mat-form-field>
 
-      <button mat-flat-button color="primary" (click)="AddCalculo()">
-        Adicionar cálculo
-      </button>
-      <button mat-flat-button color="primary" (click)="exportarPraCsv()">
-        Exportar
-      </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Percentual do dia (%)</mat-label>
+          <input matInput type="number" [(ngModel)]="extraHours.baseRateDay" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Valor por hora</mat-label>
+          <input matInput type="number" [(ngModel)]="extraHours.valueHourBase" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Total calculado</mat-label>
+          <input matInput [(ngModel)]="extraHours.totalValueEarnedDay" readonly />
+        </mat-form-field>
+
+        <button mat-flat-button color="primary" (click)="addCalculo()">
+          Adicionar cálculo
+        </button>
+        <button mat-flat-button color="primary" (click)="exportarPraCsv()">
+          Exportar
+        </button>
       </div>
     </div>
   </mat-card>
@@ -43,103 +40,48 @@
   <mat-card>
     <div class="mat-elevation-z8 table-responsive">
       <table mat-table [dataSource]="dataSource" matSort class="table-container mat-elevation-z8">
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data e hora</th>
+        <ng-container matColumnDef="created">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data de Criação</th>
           <td mat-cell *matCellDef="let row">
-            {{ row.date | date : "dd/MM/yyyy HH:mm" }}
+            {{ row.created | date: "dd/MM/yyyy HH:mm" }}
           </td>
         </ng-container>
 
-        <ng-container matColumnDef="idAnticipation">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Id de Operação
-          </th>
-          <td mat-cell *matCellDef="let row">{{ row.idAnticipation }}</td>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="cnpj">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>CNPJ</th>
+        <ng-container matColumnDef="idUser">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID do Usuário</th>
+          <td mat-cell *matCellDef="let row">{{ row.idUser }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dayOfWeek">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Dia da Semana</th>
+          <td mat-cell *matCellDef="let row">{{ row.dayOfWeek }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="hoursWorked">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Horas Trabalhadas</th>
+          <td mat-cell *matCellDef="let row">{{ row.hoursWorked }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalValueEarnedDay">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Total do Dia</th>
           <td mat-cell *matCellDef="let row">
-            {{
-              row.cnpj
-                ? (row.cnpj | mask : "00.000.000/0000-00")
-                : "Não possui CNPJ"
-            }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="companyName">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Razão Social
-          </th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.companyName ? row.companyName : "Não possui Razão Social" }}
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="operationValue">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header>
-            Valor da operação
-          </th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.operationValue | currency : "BRL" }}
-          </td>
-        </ng-container>
-
-        
-        <ng-container matColumnDef="status" stickyEnd >
-          <th mat-header-cell *matHeaderCellDef style="background: rgb(255, 255, 255);">Status</th>
-          <td mat-cell *matCellDef="let row" style="background: rgb(255, 255, 255); font-weight:500;">{{ row.status }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="action" stickyEnd>
-          <th mat-header-cell *matHeaderCellDef>Ação</th>
-          <td mat-cell *matCellDef="let row">
-            <button mat-icon-button [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu">
-              <!-- <button
-                mat-menu-item
-                *ngIf="row.statusAntecipacao >= 2600"
-                (click)="
-                  openDialogOperationDetails(row.idAnticipation, row.statusAntecipacao)
-                "
-              >
-                Detalhes da Operação
-              </button> -->
-              <button
-              *ngIf="row.statusAntecipacao >= 2600"
-              mat-menu-item
-              (click)="
-                openDialogOperationDocuments(row.idAnticipation,row.status, row.hasAnexo, row.hasCessaoUr)
-              "
-            >
-              Visualizar documentos
-            </button>
-            </mat-menu>
+            {{ row.totalValueEarnedDay | currency: 'BRL' }}
           </td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         <tr class="mat-row" *matNoDataRow>
-          <td
-            class="mat-cell text-center"
-            [attr.colspan]="displayedColumns.length"
-          >
+          <td class="mat-cell text-center" [attr.colspan]="displayedColumns.length">
             Nenhum registro encontrado
           </td>
         </tr>
       </table>
     </div>
-    <!-- <mat-paginator
-      [pageSizeOptions]="[5, 10, 25, 50, 100]"
-      [pageSize]="50"
-      [showFirstLastButtons]="true"
-      [length]="this.count"
-      (page)="this.updateUserList()"
-    >
-    </mat-paginator> -->
   </mat-card>
 </div>

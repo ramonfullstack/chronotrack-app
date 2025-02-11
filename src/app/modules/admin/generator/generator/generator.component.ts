@@ -2,13 +2,8 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { ActivatedRoute } from '@angular/router';
-import { UtilsService } from '@shared/services/utils.service';
-import { LoginService } from 'src/app/modules/login/login.service';
-import { CookieStorage } from '@core/storages/CookieStorage.services';
-import { DialogOperationDocumentsService } from '../dialog-operation-documents/dialog-operation-documents.service';
-import * as moment from 'moment';
 import { GeneratorService } from '../generator.service';
+import { ExtraHours } from '../model/ExtrahoursModel';
 
 @Component({
   selector: 'app-statement',
@@ -17,125 +12,99 @@ import { GeneratorService } from '../generator.service';
 })
 export class GeneratorComponent implements AfterViewInit {
   displayedColumns: string[] = [
-    'idAnticipation',
-    'cnpj',
-    'companyName',
-    'date',
-    'operationValue',
-    'status',
-    'action',
+    'id',
+    'idUser',
+    'dayOfWeek',
+    'hoursWorked',
+    'totalValueEarnedDay',
+    'created',
   ];
-  dataSource!: MatTableDataSource<any>;
-
-  //filters = new GetStatementRequest();
-  count: number = 0;
-  inputStartDate: Date;
-  inputEndDate: Date;
-  minStartDate: Date;
+  dataSource!: MatTableDataSource<ExtraHours>;
+  extraHours: ExtraHours = {
+    id: 0,
+    idUser: 0,
+    hoursWorked: 0,
+    baseRateDay: 0,
+    valueHourBase: 0,
+    totalValueEarnedDay: 0,
+    dayOfWeek: '',
+    created: new Date(),
+    updated: new Date(),
+  };
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
-  diaSemana: any;
-  horasTrabalhadas: any;
-  percentualDia: any;
-  valorHora: any;
-  total: any;
 
-  constructor(
-    private service: GeneratorService,
-    private _dialogDocumentsService: DialogOperationDocumentsService,
-    private route: ActivatedRoute,
-    private utilsService: UtilsService,
-    private _loginService: LoginService,
-    private _cookieService: CookieStorage
-  ) {
-    console.log('Iniciado gerador de horas componente');
-  }
+  constructor(private service: GeneratorService) {}
 
   ngAfterViewInit(): void {
-    // this.route.params.subscribe((params) => {
-    //   this.filters.Cnpj = params['cnpj'] || '';
-    // });
-
-    this.handleRefreshToken();
-    this.updateFilters();
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
   }
 
-  openDialogOperationDocuments(
-    idAnticipation: number,
-    status: string,
-    hasAnexo: number,
-    hasCessaoUr: number
-  ) {
-    this._dialogDocumentsService
-      .openDocumentsDialog({
-        idAnticipation,
-        hasAnexo,
-        hasCessaoUr,
-      })
-      .subscribe();
+  ngOnInit() {
+    this.loadFictitiousData();
   }
 
-  // validateFilters(): GetStatementRequest {
-  //   let request = new GetStatementRequest();
-  //   if (this.filters.Cnpj) request.Cnpj = this.filters.Cnpj;
-  //   if (this.filters.companyName)
-  //     request.companyName = this.filters.companyName;
+  addCalculo() {
+    this.extraHours.totalValueEarnedDay =
+      (this.extraHours.hoursWorked || 0) *
+      (this.extraHours.valueHourBase || 0) *
+      (this.extraHours.baseRateDay || 100) / 100;
 
-  //   if (this.inputStartDate)
-  //     request.startDate = this.inputStartDate.toISOString().slice(0, 10);
-  //   if (this.inputEndDate)
-  //     request.endDate = this.inputEndDate.toISOString().slice(0, 10);
-  //   if (this.filters.status) request.status = this.filters.status;
-
-  //   request.pgNumber = this.paginator.pageIndex + 1;
-  //   request.pgSize = this.paginator.pageSize;
-
-  //   return request;
-  // }
-
-  inputPeriodPreset(mes: number) {
-    this.inputStartDate = moment().add(3, 'days').toDate();
-    this.inputEndDate = moment().add(mes, 'months').toDate();
+    // Aqui você pode adicionar o cálculo à lista de registros
+    this.dataSource.data = [...this.dataSource.data, this.extraHours];
+    this.extraHours = {
+      id: 0,
+      idUser: 0,
+      hoursWorked: 0,
+      baseRateDay: 0,
+      valueHourBase: 0,
+      totalValueEarnedDay: 0,
+      dayOfWeek: '',
+      created: new Date(),
+      updated: new Date(),
+    };
   }
 
-  updateFilters() {
-    this.paginator.firstPage();
-  }
+ 
 
-  handleRefreshToken(): void {
-    this._loginService.refreshToken().subscribe({
-      next: (response: any) => {
-        this._cookieService.SetTokenOnCookies(response.accessToken);
-      },
-    });
+  loadFictitiousData() {
+    const fictitiousData = this.service.getFictitiousData();
+    this.dataSource.data = fictitiousData;
   }
 
   exportarPraCsv() {
-    throw new Error('Method not implemented.');
-  }
-  AddCalculo() {
-    throw new Error('Method not implemented.');
+    // Lógica para exportação para CSV
+    const csvData = this.dataSource.data.map((row) => ({
+      id: row.id,
+      idUser: row.idUser,
+      dayOfWeek: row.dayOfWeek,
+      hoursWorked: row.hoursWorked,
+      totalValueEarnedDay: row.totalValueEarnedDay,
+      created: row.created.toISOString(),
+    }));
+    const csvString = this.convertToCSV(csvData);
+    this.downloadCSV(csvString);
   }
 
-  // exportarPraCsv() {
-  //   console.log("Exportando excel");
-  //   let request = this.validateFilters();
-  //   this.service.ExportScheduleToExcel(request).subscribe({
-  //     next: (response) => {
-  //       const blob = new Blob([response], { type: 'text/csv' });
-  //       const url = window.URL.createObjectURL(blob);
-  //       const a = document.createElement('a');
-  //       a.href = url;
-  //       a.download = `Statements_${new Date().toISOString()}.csv`; // Agora CSV de verdade
-  //       document.body.appendChild(a);
-  //       a.click();
-  //       document.body.removeChild(a);
-  //       window.URL.revokeObjectURL(url);
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao exportar CSV:', err);
-  //     }
-  //   });
-  // }
+  convertToCSV(data: any[]): string {
+    const header = Object.keys(data[0]).join(',') + '\n';
+    const rows = data
+      .map((row) => Object.values(row).join(','))
+      .join('\n');
+    return header + rows;
+  }
+
+  downloadCSV(csvString: string) {
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `ExtraHours_${new Date().toISOString()}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    window.URL.revokeObjectURL(url);
+  }
 }
