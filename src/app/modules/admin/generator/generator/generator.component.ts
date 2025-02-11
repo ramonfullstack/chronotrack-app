@@ -141,17 +141,31 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
   }
 
   exportarPraCsv() {
-    const csvData = this.dataSource.data.map((row) => ({
-      id: row.id,
-      idUser: row.idUser,
-      dayOfWeek: row.dayOfWeek,
-      hoursWorked: row.hoursWorked,
-      totalValueEarnedDay: row.totalValueEarnedDay,
-      created: this.formatDate(row.created),  // Convertendo a data para um formato legível
-    }));
-  
-    const csvString = this.convertToCSV(csvData);
-    this.downloadCSV(csvString);
+    console.log('Exportando csv');
+    console.log('userId: ' + this.userId);
+
+    // Verifica se o userId está definido antes de chamar o serviço
+    if (this.userId) {
+      this.service.downloadSalesReport(this.userId).subscribe({
+        next: (blob: Blob) => {
+          // Cria um link de download e força o download do arquivo CSV
+          const a = document.createElement('a');
+          const url = window.URL.createObjectURL(blob);
+          a.href = url;
+          a.download = 'ExtraHoursReport.csv';  // Nome do arquivo CSV
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        },
+        error: (err) => {
+          console.error('Erro ao exportar o CSV', err);
+          // Pode adicionar um alerta ou mensagem de erro para o usuário
+        }
+      });
+    } else {
+      console.error('userId não definido');
+    }
   }
   
   convertToCSV(data: any[]): string {

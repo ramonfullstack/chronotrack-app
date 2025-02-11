@@ -4,8 +4,6 @@ import { environment } from 'src/environments/environment';
 import { Observable, tap } from 'rxjs';
 import { ExtraHours } from './model/ExtrahoursModel';
 
-
-
 @Injectable({
   providedIn: 'root',
 })
@@ -22,31 +20,23 @@ export class GeneratorService {
 
   saveHourInDatabase(extraHours: ExtraHours): Observable<ExtraHours> {
     return this.http.post<ExtraHours>(
-      `${environment.apiUrl}/extrahours/saveHour`, 
+      `${environment.apiUrl}/extrahours/saveHour`,
       extraHours
     );
   }
 
   downloadSalesReport(idUser: number): Observable<Blob> {
-    return this.http.get(`${environment.apiUrl}/extrahours/exportexcel/${idUser}`, {
-      responseType: 'blob',
-    }).pipe(
-      tap((blob: Blob) => {
-        const a = document.createElement('a');
-        const url = window.URL.createObjectURL(blob);
-        a.href = url;
-        a.download = 'sales_report.xlsx';
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      })
+    return this.http.get(
+      `${environment.apiUrl}/extrahours/exportar-csv/${idUser}`,
+      {
+        responseType: 'blob',
+      }
     );
   }
 
   getFictitiousData(): ExtraHours[] {
     const data: ExtraHours[] = [];
-    
+
     // Gerando 10 dados fictícios
     for (let i = 0; i < 10; i++) {
       const fictitiousData: ExtraHours = {
@@ -63,9 +53,10 @@ export class GeneratorService {
 
       // Calculando o valor total ganho no dia
       fictitiousData.totalValueEarnedDay =
-        (fictitiousData.hoursWorked || 0) *
-        (fictitiousData.valueHourBase || 0) *
-        (fictitiousData.baseRateDay || 100) / 100;
+        ((fictitiousData.hoursWorked || 0) *
+          (fictitiousData.valueHourBase || 0) *
+          (fictitiousData.baseRateDay || 100)) /
+        100;
 
       data.push(fictitiousData);
     }
@@ -74,11 +65,18 @@ export class GeneratorService {
   }
 
   private getRandomDayOfWeek(): string {
-    const days = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado', 'Domingo'];
+    const days = [
+      'Segunda-feira',
+      'Terça-feira',
+      'Quarta-feira',
+      'Quinta-feira',
+      'Sexta-feira',
+      'Sábado',
+      'Domingo',
+    ];
     const randomIndex = Math.floor(Math.random() * days.length);
     return days[randomIndex];
   }
-  
 
   buildQueryString(params: any): string {
     if (!params) return '';
@@ -91,5 +89,4 @@ export class GeneratorService {
 
     return qs;
   }
-
 }
