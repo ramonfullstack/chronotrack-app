@@ -49,6 +49,7 @@ export class GeneratorService {
         dayOfWeek: this.getRandomDayOfWeek(),
         created: new Date(),
         updated: new Date(),
+        dateSelected: new Date(),
       };
 
       // Calculando o valor total ganho no dia

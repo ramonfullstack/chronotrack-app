@@ -8,4 +8,5 @@ export interface ExtraHours {
   dayOfWeek?: string;
   created: Date;
   updated: Date;
+  dateSelected: Date;
 }

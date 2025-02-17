@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -30,6 +30,7 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
     dayOfWeek: '',
     created: new Date(),
     updated: new Date(),
+    dateSelected: new Date(),
   };
 
   daysOfWeek: string[] = [
@@ -46,7 +47,7 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
   @ViewChild(MatSort) sort!: MatSort;
   userId: number;
 
-  constructor(private service: GeneratorService) {}
+  constructor(private service: GeneratorService, private cdRef: ChangeDetectorRef) {}
 
   ngOnInit() {
     this.getUserIdFromLocalStorage();
@@ -87,10 +88,19 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
       dayOfWeek: '',
       created: new Date(),
       updated: new Date(),
+      dateSelected:  new Date(), 
     };
 
     this.getListExtraHours();
+
   }
+
+  onDateChange(event: any) {
+    const selectedDate = event.value;
+    const dayOfWeek = selectedDate.getDay();
+    this.extraHours.dayOfWeek = this.daysOfWeek[dayOfWeek];
+  }
+
 
   getUserIdFromLocalStorage(): void {
     const storedUserId = localStorage.getItem('userId');
@@ -126,6 +136,7 @@ export class GeneratorComponent implements AfterViewInit, OnInit {
         (data) => {
           if (data && Array.isArray(data)) {
             this.dataSource.data = data;
+            this.cdRef.detectChanges();
             console.log('Horas extras carregadas:', data);
           } else {
             console.error('Dados de horas extras inválidos', data);
