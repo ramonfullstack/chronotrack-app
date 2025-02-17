@@ -35,6 +35,27 @@ export class LoginService {
     );
   }
 
+  createUser(
+    name: string,
+    email: string,
+    password: string,
+    salary: number
+  ): Observable<{ user: user; message: string }> {
+    const body = {
+      name: name,
+      email: email,
+      password: password,
+      salary: salary
+    };
+  
+    return this.http.post<{ user: user; message: string }>(
+      `${environment.apiUrl}/auth/createuser`,
+      body
+    );
+  }
+  
+  
+
   refreshToken(){
     return this.http.post<{ accessToken: string; expire: Date }>(
       `${environment.apiUrl}/auth/refresh-token`, null

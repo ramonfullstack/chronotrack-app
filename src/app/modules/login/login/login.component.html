@@ -1,7 +1,10 @@
 <div class="content">
   <mat-card class="card">
     <div class="logo">
-      <img src="../../../../assets/icons/chronotrack_icone_principal.webp" alt="EntrePay" />
+      <img
+        src="../../../../assets/icons/chronotrack_icone_principal.webp"
+        alt="EntrePay"
+      />
     </div>
     <form [formGroup]="loginForm" (ngSubmit)="login()">
       <mat-card-content class="card-content">
@@ -56,8 +59,19 @@
           color="primary"
           type="submit"
           [disabled]="!loginForm.valid"
+          style="margin-right: 10px"
         >
           Entrar
+        </button>
+        <button
+          class="btn-submit"
+          mat-flat-button
+          color="primary"
+          type="submit"
+          routerLink="/createuser"
+          style="margin-left: 10px"
+        >
+          Cadastrar usuário
         </button>
       </mat-card-actions>
     </form>

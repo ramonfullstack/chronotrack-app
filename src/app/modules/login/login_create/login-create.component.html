@@ -1,0 +1,54 @@
+<div class="content">
+  <mat-card class="card">
+    <div class="logo">
+      <img src="../../../../assets/icons/chronotrack_icone_principal.webp" alt="EntrePay" />
+    </div>
+    <form [formGroup]="registerForm" (ngSubmit)="register()">
+      <mat-card-content class="card-content">
+        <mat-form-field appearance="fill" class="input-width" floatLabel="always">
+          <mat-label>Nome</mat-label>
+          <input type="text" matInput required formControlName="name" />
+          <mat-error *ngIf="registerForm.get('name')?.hasError('required')">
+            Nome é <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-width" floatLabel="always">
+          <mat-label>Email</mat-label>
+          <input type="email" matInput autofocus required formControlName="email" />
+          <mat-error *ngIf="registerForm.get('email')?.hasError('required')">
+            Email é <strong>requerido</strong>
+          </mat-error>
+          <mat-error *ngIf="!registerForm.get('email')?.hasError('required')">
+            Por favor insira um endereço de e-mail válido
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-width">
+          <mat-label>Sua Senha</mat-label>
+          <input formControlName="password" matInput required [type]="hide ? 'password' : 'text'" />
+          <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" type="button">
+            <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+          <mat-error *ngIf="registerForm.get('password')?.hasError('required')">
+            Senha é <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="input-width" floatLabel="always">
+          <mat-label>Salário</mat-label>
+          <input type="number" matInput required formControlName="salary" />
+          <mat-error *ngIf="registerForm.get('salary')?.hasError('required')">
+            Salário é <strong>requerido</strong>
+          </mat-error>
+        </mat-form-field>
+      </mat-card-content>
+
+      <mat-card-actions class="card-actions">
+        <button class="btn-submit" mat-flat-button color="primary" type="submit" [disabled]="!registerForm.valid">
+          Cadastrar
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>

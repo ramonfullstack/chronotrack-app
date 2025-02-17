@@ -16,6 +16,7 @@ import { CookieStorage } from '@core/storages/CookieStorage.services';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
+
   loginForm: FormGroup;
 
   hide = true;
@@ -71,5 +72,9 @@ export class LoginComponent {
         });
     }
   }
+
+  navigateToLoginCreate() {
+    throw new Error('Method not implemented.');
+    }
   
 }

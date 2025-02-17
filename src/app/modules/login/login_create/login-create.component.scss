@@ -1,0 +1,45 @@
+.content {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  background-color: #252525;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  width: 400px;
+  min-height: 430px;
+  background-color: #252525;
+  box-shadow: none !important;
+  &-content {
+    margin: 0 0 8px;
+  }
+  &-actions {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+  }
+
+  .logo {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    margin-bottom: 40px;
+    img {
+      max-width: 100%;
+    }
+  }
+  .input-width {
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .btn-submit {
+    width: 250px;
+    display: inline-block;
+    margin: auto;
+  }
+  .mat-button-disabled {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+}
